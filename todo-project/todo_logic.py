@@ -40,3 +40,21 @@ def delete_task(tasks, task_id):
         raise ValueError(f"Task with id {task_id} not found")
 
     return updated_tasks
+
+def list_tasks(tasks):
+    output = []
+
+    for task in tasks:
+        # Step 1: determine status
+        if task.completed:
+            status = "[x]"
+        else:
+            status = "[ ]"
+
+        # Step 2: build formatted string
+        formatted = f"{status} {task.id}: {task.description.strip()}"
+
+        # Step 3: add to output
+        output.append(formatted)
+
+    return output
