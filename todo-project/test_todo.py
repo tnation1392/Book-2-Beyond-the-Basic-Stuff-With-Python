@@ -1,5 +1,5 @@
 import pytest
-from todo_logic import add_task, complete_task, delete_task, Task
+from todo_logic import add_task, complete_task, delete_task, list_tasks, Task
 
 
 def test_add_task_creates_task():
@@ -73,3 +73,47 @@ def test_delete_nonexistent_task_raises():
 
     with pytest.raises(ValueError):
         delete_task(tasks, 999)
+
+#Tests the format of an outputted list
+def test_list_tasks_formats_output():
+    tasks = [
+        Task(1, "Buy milk", False),
+        Task(2, "Study Python", True)
+    ]
+
+    result = list_tasks(tasks)
+
+    assert result == [
+        "[ ] 1: Buy milk",
+        "[x] 2: Study Python"
+    ]
+
+#Tests how the system takes an empty list as input
+def test_list_tasks_empty():
+    tasks = []
+
+    result = list_tasks(tasks)
+
+    assert result == []
+
+#Tests that the order of the list is preserved
+def test_list_tasks_order_preserved():
+    tasks = [
+        Task(1, "A"),
+        Task(2, "B"),
+        Task(3, "C")
+    ]
+
+    result = list_tasks(tasks)
+
+    assert result[0].startswith("[ ] 1")
+    assert result[1].startswith("[ ] 2")
+    assert result[2].startswith("[ ] 3")
+
+#Tests how the system uses whitespace in list_tasks
+def test_list_tasks_trims_description():
+    tasks = [Task(1, "  Hello  ", False)]
+
+    result = list_tasks(tasks)
+
+    assert result == ["[ ] 1: Hello"]
